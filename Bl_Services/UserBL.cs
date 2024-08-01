@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Bl_Services
 {
-    public class UserBL
+    public class UserBL: IBL.Ibl
     {
         private readonly IDAL.IDal IUserDal;
 

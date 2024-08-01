@@ -10,6 +10,11 @@ namespace Dal_Repository
 {
     public class UserDal : IDAL.IDal
     {
+        //private readonly ProjectContext projectContext;
+        //public UserDal(ProjectContext _projectContext)
+        //{
+        //    projectContext = _projectContext;   
+        //}
         public bool Add(object item)
         {
             try

@@ -1,5 +1,4 @@
-﻿using Dal_Repository;
-using Dal_Repository.Model;
+﻿
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -10,18 +9,27 @@ namespace WebApi.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
+        private readonly IBL.Ibl IUserbl;
+
+        public UsersController(IBL.Ibl ibl)
+        {
+            IUserbl = ibl;
+        }
+
+
         // GET: api/<UsersController>
         [HttpGet]
-        public IEnumerable<User> Get()
+        //
+        public IEnumerable<object> Get()
         {
-            return new Bl_Services.UserBL().GetAll(); 
+            return IUserbl.GetAll(); 
         }
 
         // GET api/<UsersController>/5
         [HttpGet("{id}")]
-        public User Get(int id)
+        public object Get(int id)
         {
-          return new Bl_Services.UserBL().Get(id);
+          return IUserbl.Get(id);
             
         }
 
@@ -34,23 +42,23 @@ namespace WebApi.Controllers
 
         // POST api/<UsersController>
         [HttpPost]
-        public void Post([FromBody] User value)
+        public void Post([FromBody] object value)
         {
-            new Bl_Services.UserBL().Add(value);
+            IUserbl.Add(value);
         }
 
         // PUT api/<UsersController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] User user)
+        public void Put(int id, [FromBody] object user)
         {
-            new Bl_Services.UserBL().Update(user);
+            IUserbl.Update(user);
         }
 
         // DELETE api/<UsersController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            new Bl_Services.UserBL().Delete(id);
+            IUserbl.Delete(id);
         }
     }
 }

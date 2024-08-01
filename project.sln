@@ -9,7 +9,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Bl_Services", "Bl_Services\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dal_Repository", "Dal_Repository\Dal_Repository.csproj", "{AAD51A49-E06B-44CB-99BE-6D2D1D5A45DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IDAL", "IDAL\IDAL.csproj", "{3611C8E2-827B-477F-99F4-DC308AFD1618}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IDAL", "IDAL\IDAL.csproj", "{3611C8E2-827B-477F-99F4-DC308AFD1618}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IBL", "IBL\IBL.csproj", "{BB6F84A3-3B60-4186-B162-E1204E328154}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddDependencies", "AddDependencies\AddDependencies.csproj", "{316EAC93-59BE-4BC9-B8C4-F56DAF737BEA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{3611C8E2-827B-477F-99F4-DC308AFD1618}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3611C8E2-827B-477F-99F4-DC308AFD1618}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3611C8E2-827B-477F-99F4-DC308AFD1618}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB6F84A3-3B60-4186-B162-E1204E328154}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB6F84A3-3B60-4186-B162-E1204E328154}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB6F84A3-3B60-4186-B162-E1204E328154}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB6F84A3-3B60-4186-B162-E1204E328154}.Release|Any CPU.Build.0 = Release|Any CPU
+		{316EAC93-59BE-4BC9-B8C4-F56DAF737BEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{316EAC93-59BE-4BC9-B8C4-F56DAF737BEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{316EAC93-59BE-4BC9-B8C4-F56DAF737BEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{316EAC93-59BE-4BC9-B8C4-F56DAF737BEA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
