@@ -1,4 +1,5 @@
 ﻿
+using DTO;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -9,9 +10,9 @@ namespace WebApi.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IBL.Ibl IUserbl;
+        private readonly IBL.IUserBL IUserbl;
 
-        public UsersController(IBL.Ibl ibl)
+        public UsersController(IBL.IUserBL ibl)
         {
             IUserbl = ibl;
         }
@@ -20,7 +21,7 @@ namespace WebApi.Controllers
         // GET: api/<UsersController>
         [HttpGet]
         //
-        public IEnumerable<object> Get()
+        public IEnumerable<UserDTO> Get()
         {
             return IUserbl.GetAll(); 
         }
@@ -42,14 +43,14 @@ namespace WebApi.Controllers
 
         // POST api/<UsersController>
         [HttpPost]
-        public void Post([FromBody] object value)
+        public void Post([FromBody] UserDTO value)
         {
             IUserbl.Add(value);
         }
 
         // PUT api/<UsersController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] object user)
+        public void Put(int id, [FromBody] UserDTO user)
         {
             IUserbl.Update(user);
         }

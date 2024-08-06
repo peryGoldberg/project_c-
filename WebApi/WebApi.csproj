@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AddDependencies\AddDependencies.csproj" />
+    <ProjectReference Include="..\DTO\DTO.csproj" />
     <ProjectReference Include="..\IBL\IBL.csproj" />
     <ProjectReference Include="..\IDAL\IDAL.csproj" />
   </ItemGroup>

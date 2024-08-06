@@ -13,7 +13,7 @@ namespace Bl_Services
     {
         public static IServiceCollection AddBLDependencies(this IServiceCollection collection)
         {
-            collection.AddScoped(typeof(IBL.Ibl), typeof(Bl_Services.UserBL));
+            collection.AddScoped(typeof(IBL.IUserBL), typeof(Bl_Services.UserBL));
             return collection;
         }
     }

@@ -14,7 +14,7 @@ namespace Dal_Repository
     {
         public static IServiceCollection AddDalDependencies(this IServiceCollection collection)
         {
-            collection.AddScoped(typeof(IDAL.IDal),typeof(Dal_Repository.UserDal));
+            collection.AddScoped(typeof(IDAL.IUserDal),typeof(Dal_Repository.UserDal));
             return collection;
         }
         

@@ -1,4 +1,6 @@
 ﻿
+using DTO;
+using IBL;
 using IDAL;
 using System;
 using System.Collections.Generic;
@@ -8,16 +10,16 @@ using System.Threading.Tasks;
 
 namespace Bl_Services
 {
-    public class UserBL: IBL.Ibl
+    public class UserBL: IBL.IUserBL
     {
-        private readonly IDAL.IDal IUserDal;
+        private readonly IDAL.IUserDal IUserDal;
 
-        public UserBL(IDal iUserDal)
+        public UserBL(IUserDal iUserDal)
         {
             IUserDal = iUserDal;
         }
 
-        public bool Add(object item)
+        public bool Add(UserDTO item)
         {
             try
             {
@@ -30,6 +32,7 @@ namespace Bl_Services
             
         }
 
+      
         public bool Delete(int id)
         {
             try
@@ -43,7 +46,7 @@ namespace Bl_Services
             
         }
 
-        public object Get(int id)
+        public UserDTO Get(int id)
         {
             try
             {
@@ -55,12 +58,11 @@ namespace Bl_Services
             }
            
         }
-
-        public List<object> GetAll(Func<object, bool>? condition = null)
+        List<UserDTO> IUserBL.GetAll(Func<UserDTO, bool>? condition)
         {
             try
             {
-                return  IUserDal.GetAll(condition);
+                return  IUserDal.GetAll();
             }
             catch
             {
@@ -68,9 +70,15 @@ namespace Bl_Services
             }
         }
 
-        public bool Update(object user)
+       
+
+        public bool Update(UserDTO user)
         {
             return  IUserDal.Update(user);
         }
+
+       
+
+       
     }
 }

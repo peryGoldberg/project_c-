@@ -3,24 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using Dal_Repository.Model;
+using DTO;
 using IDAL;
 
 namespace Dal_Repository
 {
-    public class UserDal : IDAL.IDal
+    public class UserDal : IDAL.IUserDal
     {
-        //private readonly ProjectContext projectContext;
-        //public UserDal(ProjectContext _projectContext)
-        //{
-        //    projectContext = _projectContext;   
-        //}
-        public bool Add(object item)
+        public bool Add(UserDTO item)
         {
             try
             {
                 using Model.ProjectContext ctx = new();
-                ctx.Add(item);
+                Mapper.Initialize(
+                   cnf =>
+                   cnf.CreateMap<User, UserDTO>()
+                   .ReverseMap()
+                   );
+                User u = Mapper.Map<User>(item);
+                ctx.Add(u);
                 ctx.SaveChanges();
                 return true;
             }
@@ -30,7 +33,8 @@ namespace Dal_Repository
             }
         }
 
-      
+       
+
         public bool Delete(int id)
         {
             try
@@ -47,13 +51,20 @@ namespace Dal_Repository
             }
         }
 
-        public object Get(int id)
+        public UserDTO Get(int id)
         {
             try
             {
                 using Model.ProjectContext ctx = new();
-                object user = ctx.Users.Find(id);
-                return user;
+                Mapper.Initialize(
+                    cnf =>
+                    cnf.CreateMap<User, UserDTO>()
+                    .ReverseMap()
+                    );
+                UserDTO u=Mapper.Map<UserDTO>(ctx.Users.Find(id));
+                return u;
+                //object user = ctx.Users.Find(id);
+                //return user;
             }
             catch
             {
@@ -61,15 +72,17 @@ namespace Dal_Repository
             }
         }
 
-        public List<object> GetAll(Func<object, bool>? condition = null)
+        public List<UserDTO> GetAll(Func<UserDTO, bool>? condition = null)
         {
             try
             {
                 using Model.ProjectContext ctx = new();
-                if (condition != null)
-                    return ctx.Users.Where(condition).ToList();
-                else
-                    return ctx.Users.Select (u=>u as object ).ToList();
+                Mapper.Initialize(
+                    cnf=>
+                    cnf.CreateMap<User, UserDTO>()
+                    .ReverseMap()
+                    );
+                    return ctx.Users.Select (u=> Mapper.Map<UserDTO >(u) ).ToList();
             }
             catch
             {
@@ -77,15 +90,21 @@ namespace Dal_Repository
             }
         }
 
+        
 
-
-        public bool Update(object item)
+        public bool Update(UserDTO item)
         {
             try
             {
                 using Model.ProjectContext ctx = new();
-                ctx.Users.Attach(item as User);
-                ctx.SaveChanges();
+                Mapper.Initialize(
+                   cnf =>
+                   cnf.CreateMap<User, UserDTO>()
+                   .ReverseMap()
+                   );
+                User u = Mapper.Map<User>(item);
+                ctx.Users.Attach(u);
+                
                 return true;
             }
             catch
@@ -94,6 +113,6 @@ namespace Dal_Repository
             }
         }
 
-     
+       
     }
 }
