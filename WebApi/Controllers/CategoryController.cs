@@ -8,30 +8,30 @@ namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class CategoryController : ControllerBase
     {
-        private readonly IBL.IUserBL IUserbl;
+        private readonly IBL.ICategoryBL ICategorybl;
 
-        public UsersController(IBL.IUserBL ibl)
+        public CategoryController(IBL.ICategoryBL ibl)
         {
-            IUserbl = ibl;
+            ICategorybl = ibl;
         }
 
 
         // GET: api/<UsersController>
         [HttpGet]
         //
-        public IEnumerable<UserDTO> Get()
+        public IEnumerable<CategoryDTO> Get()
         {
-            return IUserbl.GetAll(); 
+            return ICategorybl.GetAll();
         }
 
         // GET api/<UsersController>/5
         [HttpGet("{id}")]
-        public UserDTO Get(int id)
+        public CategoryDTO Get(int id)
         {
-          return IUserbl.Get(id);
-            
+            return ICategorybl.Get(id);
+
         }
 
         //[HttpGet]
@@ -43,23 +43,23 @@ namespace WebApi.Controllers
 
         // POST api/<UsersController>
         [HttpPost]
-        public void Post([FromBody] UserDTO value)
+        public void Post([FromBody] CategoryDTO value)
         {
-            IUserbl.Add(value);
+            ICategorybl.Add(value);
         }
 
         // PUT api/<UsersController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] UserDTO user)
+        public void Put(int id, [FromBody] CategoryDTO user)
         {
-            IUserbl.Update(user);
+            ICategorybl.Update(user);
         }
 
         // DELETE api/<UsersController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
-            IUserbl.Delete(id);
+            ICategorybl.Delete(id);
         }
     }
 }

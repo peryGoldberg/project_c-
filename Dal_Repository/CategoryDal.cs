@@ -1,28 +1,27 @@
-﻿using System;
+﻿using AutoMapper;
+using Dal_Repository.Model;
+using DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using AutoMapper;
-using Dal_Repository.Model;
-using DTO;
-
 
 namespace Dal_Repository
 {
-    public class UserDal : IDAL.IUserDal
+    public class CategoryDal : IDAL.ICategoryDal
     {
-        public bool Add(UserDTO item)
+        public bool Add(CategoryDTO item)
         {
             try
             {
                 using Model.LearningPlatformContext ctx = new();
                 Mapper.Initialize(
                    cnf =>
-                   cnf.CreateMap<User, UserDTO>()
+                   cnf.CreateMap<Category, CategoryDTO>()
                    .ReverseMap()
                    );
-                User u = Mapper.Map<User>(item);
+                Category u = Mapper.Map<Category>(item);
                 ctx.Add(u);
                 ctx.SaveChanges();
                 return true;
@@ -33,15 +32,15 @@ namespace Dal_Repository
             }
         }
 
-       
+
 
         public bool Delete(int id)
         {
             try
             {
                 using Model.LearningPlatformContext ctx = new();
-                User user = ctx.Users.Find(id);
-                ctx.Users.Remove(user);
+                Category user = ctx.Categories.Find(id);
+                ctx.Categories.Remove(user);
                 ctx.SaveChanges();
                 return true;
             }
@@ -51,17 +50,17 @@ namespace Dal_Repository
             }
         }
 
-        public UserDTO Get(int id)
+        public CategoryDTO Get(int id)
         {
             try
             {
                 using Model.LearningPlatformContext ctx = new();
                 Mapper.Initialize(
                     cnf =>
-                    cnf.CreateMap<User, UserDTO>()
+                    cnf.CreateMap<Category, CategoryDTO>()
                     .ReverseMap()
                     );
-                UserDTO u=Mapper.Map<UserDTO>(ctx.Users.Find(id));
+                CategoryDTO u = Mapper.Map<CategoryDTO>(ctx.Categories.Find(id));
                 return u;
                 //object user = ctx.Users.Find(id);
                 //return user;
@@ -72,17 +71,17 @@ namespace Dal_Repository
             }
         }
 
-        public List<UserDTO> GetAll(Func<UserDTO, bool>? condition = null)
+        public List<CategoryDTO> GetAll(Func<CategoryDTO, bool>? condition = null)
         {
             try
             {
                 using Model.LearningPlatformContext ctx = new();
                 Mapper.Initialize(
-                    cnf=>
-                    cnf.CreateMap<User, UserDTO>()
+                    cnf =>
+                    cnf.CreateMap<Category, CategoryDTO>()
                     .ReverseMap()
                     );
-                    return ctx.Users.Select (u=> Mapper.Map<UserDTO >(u) ).ToList();
+                return ctx.Categories.Select(u => Mapper.Map<CategoryDTO>(u)).ToList();
             }
             catch
             {
@@ -90,20 +89,20 @@ namespace Dal_Repository
             }
         }
 
-        
 
-        public bool Update(UserDTO item)
+
+        public bool Update(CategoryDTO item)
         {
             try
             {
                 using Model.LearningPlatformContext ctx = new();
                 Mapper.Initialize(
                    cnf =>
-                   cnf.CreateMap<User, UserDTO>()
+                   cnf.CreateMap<Category, CategoryDTO>()
                    .ReverseMap()
                    );
-                User u = Mapper.Map<User>(item);
-                ctx.Users.Update(u);
+                Category u = Mapper.Map<Category>(item);
+                ctx.Categories.Update(u);
                 int changes = ctx.SaveChanges();
                 return changes > 0;
             }
@@ -113,6 +112,7 @@ namespace Dal_Repository
             }
         }
 
-       
+    
+
     }
 }

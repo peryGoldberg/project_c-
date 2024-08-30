@@ -1,28 +1,28 @@
-﻿using System;
+﻿using AutoMapper;
+using Dal_Repository.Model;
+using DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Channels;
 using System.Threading.Tasks;
-using AutoMapper;
-using Dal_Repository.Model;
-using DTO;
-
 
 namespace Dal_Repository
 {
-    public class UserDal : IDAL.IUserDal
+    public class LecturerDal : IDAL.ILecturerDal
     {
-        public bool Add(UserDTO item)
+        public bool Add(LecturerDTO item)
         {
             try
             {
                 using Model.LearningPlatformContext ctx = new();
                 Mapper.Initialize(
                    cnf =>
-                   cnf.CreateMap<User, UserDTO>()
+                   cnf.CreateMap<Lecturer, LecturerDTO>()
                    .ReverseMap()
                    );
-                User u = Mapper.Map<User>(item);
+                Lecturer u = Mapper.Map<Lecturer>(item);
                 ctx.Add(u);
                 ctx.SaveChanges();
                 return true;
@@ -33,15 +33,13 @@ namespace Dal_Repository
             }
         }
 
-       
-
         public bool Delete(int id)
         {
             try
             {
                 using Model.LearningPlatformContext ctx = new();
-                User user = ctx.Users.Find(id);
-                ctx.Users.Remove(user);
+                Lecturer l = ctx.Lecturers.Find(id);
+                ctx.Lecturers.Remove(l);
                 ctx.SaveChanges();
                 return true;
             }
@@ -51,17 +49,17 @@ namespace Dal_Repository
             }
         }
 
-        public UserDTO Get(int id)
+        public LecturerDTO Get(int id)
         {
             try
             {
                 using Model.LearningPlatformContext ctx = new();
                 Mapper.Initialize(
                     cnf =>
-                    cnf.CreateMap<User, UserDTO>()
+                    cnf.CreateMap<Lecturer, LecturerDTO>()
                     .ReverseMap()
                     );
-                UserDTO u=Mapper.Map<UserDTO>(ctx.Users.Find(id));
+                LecturerDTO u = Mapper.Map<LecturerDTO>(ctx.Lecturers.Find(id));
                 return u;
                 //object user = ctx.Users.Find(id);
                 //return user;
@@ -72,17 +70,17 @@ namespace Dal_Repository
             }
         }
 
-        public List<UserDTO> GetAll(Func<UserDTO, bool>? condition = null)
+        public List<LecturerDTO> GetAll(Func<LecturerDTO, bool>? condition = null)
         {
             try
             {
                 using Model.LearningPlatformContext ctx = new();
                 Mapper.Initialize(
-                    cnf=>
-                    cnf.CreateMap<User, UserDTO>()
+                    cnf =>
+                    cnf.CreateMap<Lecturer, LecturerDTO>()
                     .ReverseMap()
                     );
-                    return ctx.Users.Select (u=> Mapper.Map<UserDTO >(u) ).ToList();
+                return ctx.Lecturers.Select(u => Mapper.Map<LecturerDTO>(u)).ToList();
             }
             catch
             {
@@ -90,21 +88,19 @@ namespace Dal_Repository
             }
         }
 
-        
-
-        public bool Update(UserDTO item)
+        public bool Update(LecturerDTO item)
         {
             try
             {
                 using Model.LearningPlatformContext ctx = new();
                 Mapper.Initialize(
                    cnf =>
-                   cnf.CreateMap<User, UserDTO>()
+                   cnf.CreateMap<Lecturer, LecturerDTO>()
                    .ReverseMap()
                    );
-                User u = Mapper.Map<User>(item);
-                ctx.Users.Update(u);
-                int changes = ctx.SaveChanges();
+                Lecturer u = Mapper.Map<Lecturer>(item);
+                ctx.Lecturers.Update(u);
+                int changes = ctx.SaveChanges(); 
                 return changes > 0;
             }
             catch
@@ -112,7 +108,5 @@ namespace Dal_Repository
                 return false;
             }
         }
-
-       
     }
 }

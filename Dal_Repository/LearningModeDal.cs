@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,23 +7,23 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Dal_Repository.Model;
 using DTO;
-
+using IDAL;
 
 namespace Dal_Repository
 {
-    public class UserDal : IDAL.IUserDal
+    public class LearningModeDal : IDAL.ILearningModeDal
     {
-        public bool Add(UserDTO item)
+        public bool Add(LearningModeDTO item)
         {
             try
             {
                 using Model.LearningPlatformContext ctx = new();
                 Mapper.Initialize(
                    cnf =>
-                   cnf.CreateMap<User, UserDTO>()
+                   cnf.CreateMap<LearningMode, LearningModeDTO>()
                    .ReverseMap()
                    );
-                User u = Mapper.Map<User>(item);
+                LearningMode u = Mapper.Map<LearningMode>(item);
                 ctx.Add(u);
                 ctx.SaveChanges();
                 return true;
@@ -40,8 +41,8 @@ namespace Dal_Repository
             try
             {
                 using Model.LearningPlatformContext ctx = new();
-                User user = ctx.Users.Find(id);
-                ctx.Users.Remove(user);
+                LearningMode user = ctx.LearningModes.Find(id);
+                ctx.LearningModes.Remove(user);
                 ctx.SaveChanges();
                 return true;
             }
@@ -51,17 +52,17 @@ namespace Dal_Repository
             }
         }
 
-        public UserDTO Get(int id)
+        public LearningModeDTO Get(int id)
         {
             try
             {
                 using Model.LearningPlatformContext ctx = new();
                 Mapper.Initialize(
                     cnf =>
-                    cnf.CreateMap<User, UserDTO>()
+                    cnf.CreateMap<LearningMode, LearningModeDTO>()
                     .ReverseMap()
                     );
-                UserDTO u=Mapper.Map<UserDTO>(ctx.Users.Find(id));
+                LearningModeDTO u = Mapper.Map<LearningModeDTO>(ctx.LearningModes.Find(id));
                 return u;
                 //object user = ctx.Users.Find(id);
                 //return user;
@@ -72,17 +73,17 @@ namespace Dal_Repository
             }
         }
 
-        public List<UserDTO> GetAll(Func<UserDTO, bool>? condition = null)
+        public List<LearningModeDTO> GetAll(Func<LearningModeDTO, bool>? condition = null)
         {
             try
             {
                 using Model.LearningPlatformContext ctx = new();
                 Mapper.Initialize(
-                    cnf=>
-                    cnf.CreateMap<User, UserDTO>()
+                    cnf =>
+                    cnf.CreateMap<LearningMode, LearningModeDTO>()
                     .ReverseMap()
                     );
-                    return ctx.Users.Select (u=> Mapper.Map<UserDTO >(u) ).ToList();
+                return ctx.LearningModes.Select(u => Mapper.Map<LearningModeDTO>(u)).ToList();
             }
             catch
             {
@@ -90,20 +91,19 @@ namespace Dal_Repository
             }
         }
 
-        
-
-        public bool Update(UserDTO item)
+      
+        public bool Update(LearningModeDTO item)
         {
             try
             {
                 using Model.LearningPlatformContext ctx = new();
                 Mapper.Initialize(
                    cnf =>
-                   cnf.CreateMap<User, UserDTO>()
+                   cnf.CreateMap<LearningMode, LearningModeDTO>()
                    .ReverseMap()
                    );
-                User u = Mapper.Map<User>(item);
-                ctx.Users.Update(u);
+                LearningMode u = Mapper.Map<LearningMode>(item);
+                ctx.LearningModes.Update(u);
                 int changes = ctx.SaveChanges();
                 return changes > 0;
             }
@@ -113,6 +113,14 @@ namespace Dal_Repository
             }
         }
 
-       
+     
+
+      
     }
 }
+
+
+
+
+    
+        
