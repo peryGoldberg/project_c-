@@ -9,10 +9,10 @@ namespace IBL
 {
     public interface ICourseBL
     {
-        public CourseDTO Get(int id);
-        public List<CourseDTO> GetAll(Func<CourseDTO, bool>? condition = null);
-        public bool Add(CourseDTO item);
-        public bool Update(CourseDTO item);
-        public bool Delete(int id);
+        public Task<CourseDTO> GetAsync(int id);
+        public Task<List<CourseDTO>> GetAllAsync(Func<CourseDTO, bool>? condition = null);
+        public Task<bool> AddAsync(CourseDTO item);
+        public Task<bool> UpdateAsync(CourseDTO item);
+        public Task<bool> DeleteAsync(int id);
     }
 }

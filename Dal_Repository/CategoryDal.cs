@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Dal_Repository.Model;
 using DTO;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace Dal_Repository
 {
     public class CategoryDal : IDAL.ICategoryDal
     {
-        public bool Add(CategoryDTO item)
+        public async Task<bool> AddAsync(CategoryDTO item)
         {
             try
             {
@@ -21,9 +22,9 @@ namespace Dal_Repository
                    cnf.CreateMap<Category, CategoryDTO>()
                    .ReverseMap()
                    );
-                Category u = Mapper.Map<Category>(item);
-                ctx.Add(u);
-                ctx.SaveChanges();
+                Category category = Mapper.Map<Category>(item);
+                await ctx.AddAsync(category);
+               await ctx.SaveChangesAsync();
                 return true;
             }
             catch
@@ -34,14 +35,14 @@ namespace Dal_Repository
 
 
 
-        public bool Delete(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
             try
             {
                 using Model.LearningPlatformContext ctx = new();
                 Category user = ctx.Categories.Find(id);
                 ctx.Categories.Remove(user);
-                ctx.SaveChanges();
+                await ctx.SaveChangesAsync();
                 return true;
             }
             catch
@@ -49,19 +50,16 @@ namespace Dal_Repository
                 return false;
             }
         }
-
-        public CategoryDTO Get(int id)
+      
+        public async Task<CategoryDTO> GetAsync(int id)
         {
             try
             {
-                using Model.LearningPlatformContext ctx = new();
-                Mapper.Initialize(
-                    cnf =>
-                    cnf.CreateMap<Category, CategoryDTO>()
-                    .ReverseMap()
-                    );
-                CategoryDTO u = Mapper.Map<CategoryDTO>(ctx.Categories.Find(id));
-                return u;
+                using var ctx = new Model.LearningPlatformContext();
+                var config = new MapperConfiguration(cfg => cfg.CreateMap<Category, CategoryDTO>().ReverseMap());
+                var mapper = config.CreateMapper();
+                var category = await ctx.Categories.FindAsync(id);
+                return mapper.Map<CategoryDTO>(category);
                 //object user = ctx.Users.Find(id);
                 //return user;
             }
@@ -71,17 +69,19 @@ namespace Dal_Repository
             }
         }
 
-        public List<CategoryDTO> GetAll(Func<CategoryDTO, bool>? condition = null)
+        public async Task<List<CategoryDTO>> GetAllAsync(Func<CategoryDTO, bool>? condition = null)
         {
             try
             {
-                using Model.LearningPlatformContext ctx = new();
-                Mapper.Initialize(
-                    cnf =>
-                    cnf.CreateMap<Category, CategoryDTO>()
-                    .ReverseMap()
-                    );
-                return ctx.Categories.Select(u => Mapper.Map<CategoryDTO>(u)).ToList();
+                using var ctx = new Model.LearningPlatformContext();
+                var config = new MapperConfiguration(cfg =>
+                {
+                    cfg.CreateMap<Category, CategoryDTO>().ReverseMap();
+                });
+                var mapper = config.CreateMapper();
+                var users = await ctx.Categories.ToListAsync();
+                var categoryDTOs = users.Select(u => mapper.Map<CategoryDTO>(u)).ToList();
+                return condition == null ? categoryDTOs : categoryDTOs.Where(condition).ToList();
             }
             catch
             {
@@ -91,7 +91,7 @@ namespace Dal_Repository
 
 
 
-        public bool Update(CategoryDTO item)
+        public async Task<bool> UpdateAsync(CategoryDTO item)
         {
             try
             {
@@ -103,8 +103,9 @@ namespace Dal_Repository
                    );
                 Category u = Mapper.Map<Category>(item);
                 ctx.Categories.Update(u);
-                int changes = ctx.SaveChanges();
+                int changes = await ctx.SaveChangesAsync();
                 return changes > 0;
+             
             }
             catch
             {

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Bl_Services
 {
-    public class CategoryBL:IBL.ICategoryBL
+    public   class CategoryBL:IBL.ICategoryBL
     {
         private readonly IDAL.ICategoryDal ICategoryDal;
 
@@ -17,12 +17,12 @@ namespace Bl_Services
         {
             ICategoryDal = _IcategoryDal;
         }
-
-        public bool Add(CategoryDTO item)
+       
+        public async Task<bool> AddAsync(CategoryDTO item)
         {
             try
             {
-                return ICategoryDal.Add(item);
+                return await ICategoryDal.AddAsync(item);
             }
             catch
             {
@@ -31,12 +31,11 @@ namespace Bl_Services
 
         }
 
-
-        public bool Delete(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
             try
             {
-                return ICategoryDal.Delete(id);
+                return await ICategoryDal.DeleteAsync(id);
             }
             catch
             {
@@ -44,12 +43,12 @@ namespace Bl_Services
             }
 
         }
-
-        public CategoryDTO Get(int id)
+      
+        public async Task<CategoryDTO> GetAsync(int id)
         {
             try
             {
-                return ICategoryDal.Get(id);
+                return await ICategoryDal.GetAsync(id);
             }
             catch
             {
@@ -57,11 +56,11 @@ namespace Bl_Services
             }
 
         }
-        List<CategoryDTO> ICategoryBL.GetAll(Func<CategoryDTO, bool>? condition)
+        async Task<List<CategoryDTO>> ICategoryBL.GetAllAsync(Func<CategoryDTO, bool>? condition)
         {
             try
             {
-                return ICategoryDal.GetAll();
+                 return await ICategoryDal.GetAllAsync();
             }
             catch
             {
@@ -71,9 +70,9 @@ namespace Bl_Services
 
 
 
-        public bool Update(CategoryDTO user)
+        public async Task<bool> UpdateAsync(CategoryDTO user)
         {
-            return ICategoryDal.Update(user);
+            return await ICategoryDal.UpdateAsync(user);
         }
 
     }

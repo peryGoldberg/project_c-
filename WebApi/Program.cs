@@ -28,8 +28,9 @@ public class Program
 
 
             // השתמש במדיניות CORS
-           
-            
+
+            builder.Services.AddDbContext<LearningPlatformContext>(options =>
+           options.UseSqlServer(builder.Configuration.GetConnectionString("myConnection")));
             // Add services to the container.
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -41,9 +42,10 @@ public class Program
             var app = builder.Build();
             app.UseCors("AllowSpecificOrigin");
             app.MapControllers();
+            app.UseCastommiddleWare();
 
             // Add EF Core DbContext configuration
-         
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

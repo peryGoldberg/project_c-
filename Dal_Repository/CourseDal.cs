@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Dal_Repository.Model;
 using DTO;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace Dal_Repository
 {
     public class CourseDal:IDAL.ICourseDal
     {
-        public bool Add(CourseDTO item)
+        public async Task<bool> AddAsync(CourseDTO item)
         {
             try
             {
@@ -22,8 +23,8 @@ namespace Dal_Repository
                    .ReverseMap()
                    );
                 Course u = Mapper.Map<Course>(item);
-                ctx.Add(u);
-                ctx.SaveChanges();
+               await ctx.AddAsync(u);
+               await ctx.SaveChangesAsync();
                 return true;
             }
             catch
@@ -34,14 +35,14 @@ namespace Dal_Repository
 
 
 
-        public bool Delete(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
             try
             {
                 using Model.LearningPlatformContext ctx = new();
-                Course user = ctx.Courses.Find(id);
+                Course user = await ctx.Courses.FindAsync(id);
                 ctx.Courses.Remove(user);
-                ctx.SaveChanges();
+                await ctx.SaveChangesAsync();
                 return true;
             }
             catch
@@ -50,20 +51,15 @@ namespace Dal_Repository
             }
         }
 
-        public CourseDTO Get(int id)
+        public async Task<CourseDTO> GetAsync(int id)
         {
             try
             {
-                using Model.LearningPlatformContext ctx = new();
-                Mapper.Initialize(
-                    cnf =>
-                    cnf.CreateMap<Course, CourseDTO>()
-                    .ReverseMap()
-                    );
-                CourseDTO u = Mapper.Map<CourseDTO>(ctx.Courses.Find(id));
-                return u;
-                //object user = ctx.Users.Find(id);
-                //return user;
+                using var ctx = new Model.LearningPlatformContext();
+                var config = new MapperConfiguration(cfg => cfg.CreateMap<Course, CourseDTO>().ReverseMap());
+                var mapper = config.CreateMapper();
+                var course = await ctx.Courses.FindAsync(id);
+                return mapper.Map<CourseDTO>(course);
             }
             catch
             {
@@ -71,17 +67,19 @@ namespace Dal_Repository
             }
         }
 
-        public List<CourseDTO> GetAll(Func<CourseDTO, bool>? condition = null)
+        public async Task<List<CourseDTO>> GetAllAsync(Func<CourseDTO, bool>? condition = null)
         {
             try
             {
-                using Model.LearningPlatformContext ctx = new();
-                Mapper.Initialize(
-                    cnf =>
-                    cnf.CreateMap<Course, CourseDTO>()
-                    .ReverseMap()
-                    );
-                return ctx.Courses.Select(u => Mapper.Map<CourseDTO>(u)).ToList();
+                using var ctx = new Model.LearningPlatformContext();
+                var config = new MapperConfiguration(cfg =>
+                {
+                    cfg.CreateMap<Course, CourseDTO>().ReverseMap();
+                });
+                var mapper = config.CreateMapper();
+                var users = await ctx.Courses.ToListAsync();
+                var userDtos = users.Select(u => mapper.Map<CourseDTO>(u)).ToList();
+                return condition == null ? userDtos : userDtos.Where(condition).ToList();
             }
             catch
             {
@@ -91,7 +89,7 @@ namespace Dal_Repository
 
 
 
-        public bool Update(CourseDTO item)
+        public async Task<bool> UpdateAsync(CourseDTO item)
         {
             try
             {
@@ -103,7 +101,7 @@ namespace Dal_Repository
                    );
                 Course u = Mapper.Map<Course>(item);
                 ctx.Courses.Update(u);
-                int changes = ctx.SaveChanges();
+                int changes = await ctx.SaveChangesAsync();
                 return changes > 0;
             }
             catch

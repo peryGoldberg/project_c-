@@ -9,10 +9,10 @@ namespace IBL
 {
     public interface IUserBL
     {
-        public UserDTO Get(int id);
-        public List<UserDTO> GetAll(Func<UserDTO, bool>? condition = null);
-        public bool Add(UserDTO item);
-        public bool Update(UserDTO item);
-        public bool Delete(int id);
+        Task<UserDTO> GetAsync(int id);
+        Task<List<UserDTO>> GetAllAsync(Func<UserDTO, bool>? condition = null);
+        Task<bool> AddAsync(UserDTO item);
+        Task<bool> UpdateAsync(UserDTO item);
+        Task<bool> DeleteAsync(int id);
     }
 }

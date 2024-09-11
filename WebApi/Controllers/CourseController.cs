@@ -16,21 +16,21 @@ namespace WebApi.Controllers
         {
             ICourseBL = ibl;
         }
-
+       
 
         // GET: api/<UsersController>
         [HttpGet]
-        //
-        public IEnumerable<CourseDTO> Get()
+     
+        public async Task<IEnumerable<CourseDTO>> GetAsync()
         {
-            return ICourseBL.GetAll();
+            return await ICourseBL.GetAllAsync();
         }
 
         // GET api/<UsersController>/5
         [HttpGet("{id}")]
-        public CourseDTO Get(int id)
+        public async Task<CourseDTO> GetAsync(int id)
         {
-            return ICourseBL.Get(id);
+            return await ICourseBL.GetAsync(id);
 
         }
 
@@ -43,23 +43,30 @@ namespace WebApi.Controllers
 
         // POST api/<UsersController>
         [HttpPost]
-        public void Post([FromBody] CourseDTO value)
+        public async Task<IActionResult> PostAsync([FromBody] CourseDTO value)
         {
-            ICourseBL.Add(value);
+            var success = await ICourseBL.AddAsync(value);
+            return success ? Ok() : BadRequest();
         }
 
-        // PUT api/<UsersController>/5
+
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] CourseDTO user)
+        public async Task<IActionResult> Put(int id, [FromBody] CourseDTO user)
         {
-            ICourseBL.Update(user);
+            if (id != user.CourseId)
+            {
+                return BadRequest();
+            }
+
+            var success = await ICourseBL.UpdateAsync(user);
+            return success ? Ok() : NotFound();
         }
 
-        // DELETE api/<UsersController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            ICourseBL.Delete(id);
+            var success = await ICourseBL.DeleteAsync(id);
+            return success ? Ok() : NotFound();
         }
     }
 }

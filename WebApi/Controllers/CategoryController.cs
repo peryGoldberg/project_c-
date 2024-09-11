@@ -10,27 +10,27 @@ namespace WebApi.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        private readonly IBL.ICategoryBL ICategorybl;
+        private readonly IBL.ICategoryBL ICategoryBL;
 
         public CategoryController(IBL.ICategoryBL ibl)
         {
-            ICategorybl = ibl;
+            ICategoryBL = ibl;
         }
 
 
         // GET: api/<UsersController>
         [HttpGet]
-        //
-        public IEnumerable<CategoryDTO> Get()
+
+        public async Task<IEnumerable<CategoryDTO>> GetAsync()
         {
-            return ICategorybl.GetAll();
+            return await ICategoryBL.GetAllAsync();
         }
 
         // GET api/<UsersController>/5
         [HttpGet("{id}")]
-        public CategoryDTO Get(int id)
+        public async Task<CategoryDTO> GetAsync(int id)
         {
-            return ICategorybl.Get(id);
+            return await ICategoryBL.GetAsync(id);
 
         }
 
@@ -43,23 +43,31 @@ namespace WebApi.Controllers
 
         // POST api/<UsersController>
         [HttpPost]
-        public void Post([FromBody] CategoryDTO value)
+        public async Task<IActionResult> PostAsync([FromBody] CategoryDTO value)
         {
-            ICategorybl.Add(value);
+            var success = await ICategoryBL.AddAsync(value);
+            return success ? Ok() : BadRequest();
         }
 
-        // PUT api/<UsersController>/5
+
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] CategoryDTO user)
+        public async Task<IActionResult> Put(int id, [FromBody] CategoryDTO category)
         {
-            ICategorybl.Update(user);
+            if (id != category.CategoryId)
+            {
+                return BadRequest();
+            }
+
+            var success = await ICategoryBL.UpdateAsync(category);
+            return success ? Ok() : NotFound();
         }
 
-        // DELETE api/<UsersController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            ICategorybl.Delete(id);
+            var success = await ICategoryBL.DeleteAsync(id);
+            return success ? Ok() : NotFound();
         }
     }
 }
+

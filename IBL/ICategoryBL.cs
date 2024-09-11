@@ -9,10 +9,10 @@ namespace IBL
 {
     public interface ICategoryBL
     {
-        public CategoryDTO Get(int id);
-        public List<CategoryDTO> GetAll(Func<CategoryDTO, bool>? condition = null);
-        public bool Add(CategoryDTO item);
-        public bool Update(CategoryDTO item);
-        public bool Delete(int id);
+        public Task<CategoryDTO> GetAsync(int id);
+        public Task<List<CategoryDTO>> GetAllAsync(Func<CategoryDTO, bool>? condition = null);
+        public Task<bool> AddAsync(CategoryDTO item);
+        public Task<bool> UpdateAsync(CategoryDTO item);
+        public Task<bool> DeleteAsync(int id);
     }
 }

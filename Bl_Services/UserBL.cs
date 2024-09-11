@@ -19,11 +19,11 @@ namespace Bl_Services
             IUserDal = iUserDal;
         }
 
-        public bool Add(UserDTO item)
+        public async Task<bool> AddAsync(UserDTO item)
         {
             try
             {
-                return IUserDal.Add(item);
+                return await IUserDal.AddAsync(item);
             }
             catch
             {
@@ -33,11 +33,11 @@ namespace Bl_Services
         }
 
       
-        public bool Delete(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
             try
             {
-                return  IUserDal.Delete(id);
+                return await IUserDal.DeleteAsync(id);
             }
             catch 
             { 
@@ -46,11 +46,11 @@ namespace Bl_Services
             
         }
 
-        public UserDTO Get(int id)
+        public async Task<UserDTO> GetAsync(int id)
         {
             try
             {
-                 return  IUserDal.Get(id);
+                 return await IUserDal.GetAsync(id);
             }
             catch
             {
@@ -58,11 +58,11 @@ namespace Bl_Services
             }
            
         }
-        List<UserDTO> IUserBL.GetAll(Func<UserDTO, bool>? condition)
+        async Task<List<UserDTO>> IUserBL.GetAllAsync(Func<UserDTO, bool>? condition)
         {
             try
             {
-                return  IUserDal.GetAll();
+                return await IUserDal.GetAllAsync();
             }
             catch
             {
@@ -72,9 +72,9 @@ namespace Bl_Services
 
        
 
-        public bool Update(UserDTO user)
+        public async Task<bool> UpdateAsync(UserDTO user)
         {
-            return  IUserDal.Update(user);
+            return await  IUserDal.UpdateAsync(user);
         }
 
        

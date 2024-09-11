@@ -1,8 +1,8 @@
-﻿
-using DTO;
+﻿using DTO;
+using IBL;
 using Microsoft.AspNetCore.Mvc;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace WebApi.Controllers
 {
@@ -10,56 +10,51 @@ namespace WebApi.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IBL.IUserBL IUserbl;
+        private readonly IUserBL _userBL;
 
-        public UsersController(IBL.IUserBL ibl)
+        public UsersController(IUserBL userBL)
         {
-            IUserbl = ibl;
+            _userBL = userBL;
         }
 
-
-        // GET: api/<UsersController>
         [HttpGet]
-        //
-        public IEnumerable<UserDTO> Get()
+        public async Task<IEnumerable<UserDTO>> Get()
         {
-            return IUserbl.GetAll(); 
+            return await _userBL.GetAllAsync();
         }
 
-        // GET api/<UsersController>/5
         [HttpGet("{id}")]
-        public UserDTO Get(int id)
+        public async Task<UserDTO> Get(int id)
         {
-          return IUserbl.Get(id);
-            
+            return await _userBL.GetAsync(id);
         }
 
-        //[HttpGet]
-        //public object GetSpec()
-        //{
-        //    return new Bl_Services.UserBL().GetAll().Select(d=> new {d.Email,d.UserId});
-
-        //}
-
-        // POST api/<UsersController>
         [HttpPost]
-        public void Post([FromBody] UserDTO value)
+        public async Task<IActionResult> Post([FromBody] UserDTO value)
         {
-            IUserbl.Add(value);
+            var success = await _userBL.AddAsync(value);
+            return success ? Ok() : BadRequest();
         }
 
-        // PUT api/<UsersController>/5
+       
+
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] UserDTO user)
+        public async Task<IActionResult> Put(int id, [FromBody] UserDTO user)
         {
-            IUserbl.Update(user);
+            if (id != user.UserId)
+            {
+                return BadRequest();
+            }
+
+            var success = await _userBL.UpdateAsync(user);
+            return success ? Ok() : NotFound();
         }
 
-        // DELETE api/<UsersController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            IUserbl.Delete(id);
+            var success = await _userBL.DeleteAsync(id);
+            return success ? Ok() : NotFound();
         }
     }
 }
